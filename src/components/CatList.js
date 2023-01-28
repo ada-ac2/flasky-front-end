@@ -1,17 +1,29 @@
 import React from "react";
 import Cat from "./Cat";
+import PropTypes from "prop-types";
 
-const CatList = () => {
+const CatList = (props) => {
+  const catComponents = props.catData.map((cat) => {
+    return (
+      <Cat
+        name={cat.name}
+        caretaker={cat.caretaker}
+        likesCatnip={cat.likesCatnip}
+        petCount={cat.petCount}
+      />
+    );
+  });
+
   return (
     <section>
-      <h2>All Cats</h2>
-      <ul>
-        <Cat />
-        <Cat />
-        <Cat />
-      </ul>
+      <h2>Cat count: {props.catData.length}</h2>
+      <ul>{catComponents}</ul>;
     </section>
   );
+};
+
+CatList.propTypes = {
+  catData: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default CatList;

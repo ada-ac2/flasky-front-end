@@ -1,14 +1,23 @@
 import React from "react";
+import "./Cat.css";
+import PropTypes from "prop-types";
 
-const Cat = () => {
+const Cat = (props) => {
   return (
     <li>
-      <h3>Name of Cat</h3>
-      <h3>Name of Caretaker</h3>
-      <h3>Likes Catnip: yes/no</h3>
-      <button>Toggle Likes Catnip</button>
+      <h3>{props.name}</h3>
+      <h4>Caretaker: {props.caretaker}</h4>
+      <h4>Likes Catnip: yes/no</h4>
+      <h4>Pet count: {props.petCount}</h4>
+      <button>Pet Cat</button>
     </li>
   );
+};
+
+Cat.propTypes = {
+  name: PropTypes.string.isRequired,
+  caretaker: PropTypes.string,
+  petCount: PropTypes.number,
 };
 
 export default Cat;
