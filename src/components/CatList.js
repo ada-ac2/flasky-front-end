@@ -11,7 +11,6 @@ const CatList = (props) => {
         name={cat.name}
         caretaker={cat.caretaker}
         likesCatnip={cat.likesCatnip}
-        petCount={cat.petCount}
       />
     );
   });
