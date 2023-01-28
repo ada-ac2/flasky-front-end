@@ -6,6 +6,8 @@ const CatList = (props) => {
   const catComponents = props.catData.map((cat) => {
     return (
       <Cat
+        key={cat.id}
+        id={cat.id}
         name={cat.name}
         caretaker={cat.caretaker}
         likesCatnip={cat.likesCatnip}

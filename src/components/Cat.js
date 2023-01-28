@@ -15,9 +15,17 @@ const Cat = (props) => {
 };
 
 Cat.propTypes = {
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   caretaker: PropTypes.string,
+  likesCatnip: PropTypes.bool,
   petCount: PropTypes.number,
+};
+
+Cat.defaultProps = {
+  caretaker: "N/A",
+  likesCatnip: false,
+  petCount: 0,
 };
 
 export default Cat;
