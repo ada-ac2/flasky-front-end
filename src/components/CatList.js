@@ -18,7 +18,7 @@ const CatList = (props) => {
   return (
     <section>
       <h2>Cat count: {props.catData.length}</h2>
-      <ul>{catComponents}</ul>;
+      <ul>{catComponents}</ul>
     </section>
   );
 };
