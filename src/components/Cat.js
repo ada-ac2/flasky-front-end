@@ -26,6 +26,7 @@ Cat.propTypes = {
   caretaker: PropTypes.string,
   likesCatnip: PropTypes.bool,
   petCount: PropTypes.number,
+  petCatWithId: PropTypes.func.isRequired,
 };
 
 Cat.defaultProps = {

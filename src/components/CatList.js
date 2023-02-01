@@ -35,6 +35,7 @@ CatList.propTypes = {
       petCount: PropTypes.number,
     })
   ).isRequired,
+  petCatWithId: PropTypes.func.isRequired,
 };
 
 export default CatList;
