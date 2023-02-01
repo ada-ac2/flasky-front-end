@@ -1,51 +1,76 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CatList from "./components/CatList";
+import axios from "axios";
+
+const kBaseUrl = "http://127.0.0.1:5000";
+
+const transformResponse = (cat) => {
+  const {
+    caretaker,
+    color,
+    id,
+    size,
+    breed,
+    name,
+    likes_catnip: likesCatnip,
+    pet_count: petCount,
+  } = cat;
+  return { caretaker, color, id, size, breed, name, likesCatnip, petCount };
+};
+
+const getAllCats = () => {
+  return axios
+    .get(`${kBaseUrl}/cats`)
+    .then((response) => {
+      return response.data.map(transformResponse);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+const petCatWithId = (id) => {
+  return axios
+    .patch(`${kBaseUrl}/cats/${id}/pet`)
+    .then((response) => {
+      return transformResponse(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
 function App() {
-  const initialCatData = [
-    {
-      id: 0,
-      name: "Whiskers",
-      caretaker: "Farah",
-      likesCatnip: true,
-      petCount: 25,
-    },
-    {
-      id: 1,
-      name: "Fang",
-      caretaker: "Luciana",
-      likesCatnip: false,
-      petCount: 0,
-    },
-    {
-      id: 2,
-      name: "Beetle",
-      caretaker: "Aya",
-      likesCatnip: true,
-      petCount: 15,
-    },
-  ];
+  const [catState, setCatState] = useState([]);
 
-  const [catState, setCatState] = useState(initialCatData);
-
-  const petCatWithId = (id) => {
-    const newCatState = catState.map((cat) => {
-      if (cat.id === id) {
-        const newCat = { ...cat };
-        newCat.petCount = cat.petCount + 1;
-        return newCat;
-      }
-      return cat;
+  const fetchCats = () => {
+    getAllCats().then((cats) => {
+      setCatState(cats);
     });
+  };
 
-    setCatState(newCatState);
+  useEffect(() => {
+    fetchCats();
+  }, []);
+
+  const updateCat = (id) => {
+    petCatWithId(id).then((updatedCat) => {
+      setCatState((oldData) => {
+        return oldData.map((cat) => {
+          if (cat.id === id) {
+            return updatedCat;
+          }
+          return cat;
+        });
+      });
+    });
   };
 
   return (
     <main>
       <h1>List of Cats</h1>
-      <CatList catData={catState} petCatWithId={petCatWithId} />
+      <CatList catData={catState} petCatWithId={updateCat} />
     </main>
   );
 }
