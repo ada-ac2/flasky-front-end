@@ -1,6 +1,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import CatList from "./components/CatList";
+import NewCatForm from "./components/NewCatForm";
 import axios from "axios";
 
 const kBaseUrl = "http://127.0.0.1:5000";
@@ -41,6 +42,24 @@ const petCatWithId = (id) => {
     });
 };
 
+const registerCat = (catData) => {
+  const requestBody = {
+    ...catData,
+    pet_count: 0,
+    likes_catnip: catData.likesCatnip === "true" ? true : false,
+  };
+
+  return axios
+    .post(`${kBaseUrl}/cats`, [requestBody])
+    .then((response) => {
+      // return transformResponse(response.data);
+      return response.data.map(transformResponse);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 function App() {
   const [catState, setCatState] = useState([]);
 
@@ -53,6 +72,18 @@ function App() {
   useEffect(() => {
     fetchCats();
   }, []);
+
+  const onCatDataReady = (formData) => {
+    console.log(formData);
+
+    registerCat(formData)
+      .then((newCats) => {
+        setCatState(newCats);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const updateCat = (id) => {
     petCatWithId(id).then((updatedCat) => {
@@ -70,6 +101,7 @@ function App() {
   return (
     <main>
       <h1>List of Cats</h1>
+      <NewCatForm onCatDataReady={onCatDataReady} />
       <CatList catData={catState} petCatWithId={updateCat} />
     </main>
   );
